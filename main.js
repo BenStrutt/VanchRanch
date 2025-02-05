@@ -20,6 +20,38 @@ img.src = './bakh.png'; // Specify the path to your image
 // img.width = 300; // Optional: set width 
 // img.height = 200; // Optional: set height
 
-img.addEventListener("load", () => {
-	context.drawImage(img, 0, 0);
+// img.addEventListener("load", () => {
+// 	context.drawImage(img, 0, 0);
+// });
+
+const vid = document.createElement("video");
+vid.src = './punch.mp4'
+vid.loop = true;
+vid.addEventListener('canplaythrough', function() {
+	console.log("can play through");
 });
+
+// context.rotate(90 * Math.PI / 180);
+
+let count = 0;
+document.addEventListener("mousedown", () => {
+	count++
+	console.log(`count: ${count}`);
+	if (count === 3) {
+		context.translate(300, 500);
+		context.rotate(Math.PI * 1.5);
+		// ctx.translate(-150, -75);
+		vid.play();  // start playing
+		update(); //Start rendering
+	}
+});
+
+function update() {
+	console.log("drawing video");
+	context.drawImage(
+	  vid,
+	  0,
+	  0
+	);
+	requestAnimationFrame(update);
+}
