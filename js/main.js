@@ -66,6 +66,7 @@ const mediaList = [
 ];
 
 let currentMedia;
+let loading = false;
 
 document.addEventListener("mousedown", (ev) => {
 	if (!isNext(ev)) { return; }
@@ -78,6 +79,7 @@ document.addEventListener("mousedown", (ev) => {
 	let element = img;
 	if (currentMedia.ext === "mp4") { element = vid; }
 	element.src = `./${currentMedia.name}.${currentMedia.ext}`;
+	loading = true;
 });
 
 const img = document.createElement('img');
@@ -87,12 +89,16 @@ vid.addEventListener("canplaythrough", drawVideo);
 vid.loop = true;
 
 function drawImg() {
+	loading = false;
+
 	vid.pause();
 
 	resize();
 }
 
 function drawVideo() {
+	loading = false;
+
 	vid.play();
 
 	resize();
@@ -103,7 +109,8 @@ function update() {
 	context.clearRect(0, 0, canvas.width, canvas.height);
 
 	drawButton();
-	drawMedia();
+
+	if (!loading) { drawMedia(); }
 
 	requestAnimationFrame(update);
 }
