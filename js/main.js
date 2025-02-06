@@ -115,10 +115,27 @@ function update() {
 	requestAnimationFrame(update);
 }
 
+let loadingDots = "";
+let inc = 0;
 function drawButton() {
 	const { x, y, w, h } = positions.button;
 	context.strokeRect(x - w * 0.5, y - h * 0.5, w, h);
 	context.fillText("next", x, y + (h * 0.75) * 0.3);
+
+	if (loading) {
+		const text = "LOADING";
+		const width = context.measureText(text).width;
+		context.textAlign = "left";
+		context.fillText(text + loadingDots, x - width * 0.5, (canvas.height * 0.85) * 0.5);
+		context.textAlign = "center";
+
+		inc++;
+		if (inc === 25) {
+			inc = 0;
+			loadingDots += ".";
+			if (loadingDots.length === 4) { loadingDots = ""; }
+		}
+	}
 }
 
 function drawMedia() {
